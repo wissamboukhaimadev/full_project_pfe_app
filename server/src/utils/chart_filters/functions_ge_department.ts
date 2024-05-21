@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { format, startOfDay } from "date-fns"
-import { TDate, TEvent } from "../types/chart_type";
-import { IAmphieData, IStage1Data } from "../types/body_data_type";
+import { IChartData, TDate } from "../types/chart_type";
+import { IStage1Data } from "../types/body_data_type";
 
 
 const prisma = new PrismaClient()
@@ -12,25 +12,28 @@ interface IStage1DataNumbers {
     puissance_active: number,
     puissance_reactive: number,
     puissance_apparente: number,
-    energy: number,
+    energy: number
     createdAt?: Date
 
 }
-
 
 type TDayMonthYear = {
     [time: string]: IStage1DataNumbers,
 }
 
 
-export async function getDataForDate({ year, month, day }: TDate) {
+export async function getDataForDate_ge({ startDate, endDate }: IChartData) {
+
+    const date_of_start = new Date(startDate)
+    const date_of_end = new Date(endDate)
+
     try {
-        const startDate = startOfDay(new Date(year, month - 1, day));
-        const endDate = startOfDay(new Date(year, month - 1, day + 1));
+        const startDate = startOfDay(new Date(date_of_start.getFullYear(), date_of_start.getMonth(), date_of_start.getDate()));
+        const endDate = startOfDay(new Date(date_of_end.getFullYear(), date_of_end.getMonth(), date_of_end.getDate()));
         let average_data: TDayMonthYear = {}
         let average_data_count: TDayMonthYear = {}
 
-        const data = await prisma.stage3.findMany({
+        const data = await prisma.gEDepartment.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -100,7 +103,7 @@ export async function getDataForDate({ year, month, day }: TDate) {
             }
             return final_result
         })
-        return result;
+        return data;
     } catch (error) {
         console.error(error);
         throw new Error('Error retrieving data for the date.');
@@ -109,15 +112,24 @@ export async function getDataForDate({ year, month, day }: TDate) {
     }
 }
 
-export async function getDataForMonth({ year, month }: TDate) {
+
+
+
+
+
+export async function getDataForMonth_ge({ startDate, endDate }: IChartData) {
+
+    const date_of_start = new Date(startDate)
+    const date_of_end = new Date(endDate)
+
     try {
-        const startDate = startOfDay(new Date(year, month - 1, 0));
-        const endDate = startOfDay(new Date(year, month, 0));
+        const startDate = startOfDay(new Date(date_of_start.getFullYear(), date_of_start.getMonth(), date_of_start.getDate()));
+        const endDate = startOfDay(new Date(date_of_end.getFullYear(), date_of_end.getMonth(), date_of_end.getDate()));
         let average_data: TDayMonthYear = {}
         let average_data_count: TDayMonthYear = {}
 
 
-        const data = await prisma.stage3.findMany({
+        const data = await prisma.gEDepartment.findMany({
             where: {
                 createdAt: {
                     gte: startDate,
@@ -196,15 +208,18 @@ export async function getDataForMonth({ year, month }: TDate) {
         await prisma.$disconnect();
     }
 }
-export async function getDataForYear({ year }: TDate) {
+export async function getDataForYear_ge({ startDate, endDate }: IChartData) {
+
+    const date_of_start = new Date(startDate)
+    const date_of_end = new Date(endDate)
 
     try {
-        const startDate = startOfDay(new Date(year, 0, 0));
-        const endDate = startOfDay(new Date(year + 1, 0, 0));
+        const startDate = startOfDay(new Date(date_of_start.getFullYear(), date_of_start.getMonth(), date_of_start.getDate()));
+        const endDate = startOfDay(new Date(date_of_end.getFullYear(), date_of_end.getMonth(), date_of_end.getDate()));
         let average_data: TDayMonthYear = {}
         let average_data_count: TDayMonthYear = {}
 
-        const data = await prisma.stage3.findMany({
+        const data = await prisma.gEDepartment.findMany({
             where: {
                 createdAt: {
                     gte: startDate,

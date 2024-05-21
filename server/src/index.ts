@@ -4,10 +4,11 @@ import router from "./routes/route"
 import { app, httpServer, io } from "./server/socket"
 import { Socket } from "socket.io"
 import { chartFunction_Amphie } from "./controller/chart_data/chart_data_amphie"
-import { IChartData, TEvent } from "./utils/types/chart_type"
-import { chartFunction_Stage1 } from "./controller/chart_data/chart_data_stage1"
-import { chartFunction_Stage2 } from "./controller/chart_data/chart_data_stage2"
-import { chartFunction_Stage3 } from "./controller/chart_data/chart_data_stage3"
+import { IChartData } from "./utils/types/chart_type"
+import { chartFunction_GEDepartment } from "./controller/chart_data/chart_data_ge_department"
+import { chartFunction_GBIDepartment } from "./controller/chart_data/chart_data_gbi_department"
+import { chartFunction_PfeRoom } from "./controller/chart_data/chart_data_pfe_room"
+import { chartFunction_Global } from "./controller/chart_data/chart_data_global"
 
 
 
@@ -25,36 +26,41 @@ app.get("/", (req: Request, res: Response) => {
 io.on("connection", (socket: Socket) => {
 
   socket.on("amphie_chart_data", async (something: IChartData) => {
-    something.currentDate = new Date(something.currentDate)
+    something.startDate = new Date(something.startDate)
+    something.endDate = new Date(something.endDate)
     const data = await chartFunction_Amphie(something)
     socket.emit("amphie_chart_data_update", data)
 
   })
 
-  socket.on("stage1_chart_data", async (something: IChartData) => {
-    something.currentDate = new Date(something.currentDate)
-    const data = await chartFunction_Stage1(something)
-    socket.emit("stage1_chart_data_update", data)
+  socket.on("geDepartment_chart_data", async (something: IChartData) => {
+    something.startDate = new Date(something.startDate)
+    something.endDate = new Date(something.endDate)
+    const data = await chartFunction_GEDepartment(something)
+    socket.emit("geDepartment_chart_data_update", data)
 
   })
 
-  socket.on("stage2_chart_data", async (something: IChartData) => {
-    something.currentDate = new Date(something.currentDate)
-    const data = await chartFunction_Stage2(something)
-    socket.emit("stage2_chart_data_update", data)
+  socket.on("gbiDepartment_chart_data", async (something: IChartData) => {
+    something.startDate = new Date(something.startDate)
+    something.endDate = new Date(something.endDate)
+    const data = await chartFunction_GBIDepartment(something)
+    socket.emit("gbiDepartment_chart_data_update", data)
 
   })
 
-  socket.on("stage3_chart_data", async (something: IChartData) => {
-    something.currentDate = new Date(something.currentDate)
-    const data = await chartFunction_Stage3(something)
-    socket.emit("stage3_chart_data_update", data)
+  socket.on("pfeRoom_chart_data", async (something: IChartData) => {
+    something.startDate = new Date(something.startDate)
+    something.endDate = new Date(something.endDate)
+    const data = await chartFunction_PfeRoom(something)
+    socket.emit("pfeRoom_chart_data_update", data)
 
   })
 
   socket.on("global_chart_data", async (something: IChartData) => {
-    something.currentDate = new Date(something.currentDate)
-    const data = await chartFunction_Stage3(something)
+    something.startDate = new Date(something.startDate)
+    something.endDate = new Date(something.endDate)
+    const data = await chartFunction_Global(something)
     socket.emit("global_chart_data_update", data)
 
   })

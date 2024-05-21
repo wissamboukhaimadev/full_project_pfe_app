@@ -5,21 +5,23 @@ import { validate_stage_data } from "../utils/validation/type_validator"
 import { io } from "../server/socket"
 import { check_pm255_stage2_notification } from "../utils/functions/notifications"
 import { jsonToCSV } from "../utils/functions/csvconverter"
+import { chartFunction_GBIDepartment } from "./chart_data/chart_data_gbi_department"
+import { IChartData } from "../utils/types/chart_type"
 
 
 const prisma = new PrismaClient()
 
-export const getStage2_data = async (req: Request, res: Response) => {
-    const stage2_data: IStage2Data[] = await prisma.stage2.findMany()
+export const getGbiDepartment_data = async (req: Request, res: Response) => {
+    const stage2_data: IStage2Data[] = await prisma.gBIDepartment.findMany()
     res.send(stage2_data)
 }
 
 
-export const insertStage2_data = async (req: Request, res: Response) => {
+export const insertGbiDepartment_data = async (req: Request, res: Response) => {
     const data: IStage2Data = req.body
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
-        const data_inserted: IStage2Data = await prisma.stage2.create({ data })
+        const data_inserted: IStage2Data = await prisma.gBIDepartment.create({ data })
         io.emit("inserted_stage2_data", data_inserted)
         res.send(data_inserted)
     } else {
@@ -28,7 +30,7 @@ export const insertStage2_data = async (req: Request, res: Response) => {
 }
 
 
-export const stage2_realtime_forward = async (req: Request, res: Response) => {
+export const GbiDepartment_realtime_forward = async (req: Request, res: Response) => {
     const data: IStage2Data = req.body;
     if (validate_stage_data(data)) {
         check_pm255_stage2_notification(data)
@@ -39,8 +41,8 @@ export const stage2_realtime_forward = async (req: Request, res: Response) => {
     }
 }
 
-export const stage2_export = async (req: Request, res: Response) => {
-    const stage2_data = await prisma.stage2.findMany({})
+export const GbiDepartment_export = async (req: Request, res: Response) => {
+    const stage2_data = await prisma.gBIDepartment.findMany({})
 
     const data_no_id = stage2_data.map(item => {
         const { id, ...newItem } = item
@@ -48,4 +50,17 @@ export const stage2_export = async (req: Request, res: Response) => {
     })
     const csv_data = jsonToCSV(data_no_id)
     res.send(stage2_data)
+}
+
+
+
+export const getGBI_chart_data = async (req: Request, res: Response) => {
+
+    const data: IChartData = req.body
+
+    const data_db = await chartFunction_GBIDepartment(data)
+
+    res.send(data_db)
+
+
 }

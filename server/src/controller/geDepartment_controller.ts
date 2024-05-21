@@ -5,29 +5,36 @@ import { validate_stage_data } from "../utils/validation/type_validator"
 import { io } from "../server/socket"
 import { check_pm255_stage1_notification } from "../utils/functions/notifications"
 import { jsonToCSV } from "../utils/functions/csvconverter"
+import { IChartData } from "../utils/types/chart_type"
+import { getDataForDate_ge } from "../utils/chart_filters/functions_ge_department"
+import { chartFunction_GEDepartment } from "./chart_data/chart_data_ge_department"
 
 
 const prisma = new PrismaClient()
 
 
-export const getStage1_data = async (req: Request, res: Response) => {
-    const stage1_data: IStage1Data[] = await prisma.stage1.findMany()
+export const getGEDepatment_data = async (req: Request, res: Response) => {
+    const stage1_data: IStage1Data[] = await prisma.gEDepartment.findMany()
     res.send(stage1_data)
 }
 
-export const insertStage1_data = async (req: Request, res: Response) => {
+export const insertGEDepatment_data = async (req: Request, res: Response) => {
     const data: IStage1Data = req.body
+
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
-        const data_inserted: IStage1Data = await prisma.stage1.create({ data })
+        const data_inserted: IStage1Data = await prisma.gEDepartment.create({ data })
         io.emit("inserted_stage1_data", data_inserted)
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")
     }
+
+
+
 }
 
-export const stage1_realtime_forward = async (req: Request, res: Response) => {
+export const GEDepatment_realtime_forward = async (req: Request, res: Response) => {
     const data: IStage1Data = req.body;
     if (validate_stage_data(data)) {
         check_pm255_stage1_notification(data)
@@ -38,8 +45,8 @@ export const stage1_realtime_forward = async (req: Request, res: Response) => {
     }
 }
 
-export const stage1_export = async (req: Request, res: Response) => {
-    const stage1_data = await prisma.stage1.findMany({})
+export const GEDepatment_export = async (req: Request, res: Response) => {
+    const stage1_data = await prisma.gEDepartment.findMany({})
 
     const data_no_id = stage1_data.map(item => {
         const { id, ...newItem } = item
@@ -47,4 +54,16 @@ export const stage1_export = async (req: Request, res: Response) => {
     })
     const csv_data = jsonToCSV(data_no_id)
     res.send(stage1_data)
+}
+
+
+export const getGe_chart_data = async (req: Request, res: Response) => {
+
+    const data: IChartData = req.body
+
+    const data_db = await chartFunction_GEDepartment(data)
+
+    res.send(data_db)
+
+
 }

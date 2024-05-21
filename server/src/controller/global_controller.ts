@@ -5,9 +5,8 @@ import { validate_stage_data } from "../utils/validation/type_validator"
 import { io } from "../server/socket"
 import { check_pm255_global_notification } from "../utils/functions/notifications"
 import { jsonToCSV } from "../utils/functions/csvconverter"
-import { Settings } from "../utils/types/chart_type"
-import { chartFunction_Amphie } from "./chart_data/chart_data_amphie"
-import { getDataForMonth } from "../utils/chart_filters/functions_amphie"
+import { IChartData } from "../utils/types/chart_type"
+import { chartFunction_Global } from "./chart_data/chart_data_global"
 
 
 const prisma = new PrismaClient()
@@ -51,4 +50,17 @@ export const global_export = async (req: Request, res: Response) => {
     })
     const csv_data = jsonToCSV(data_no_id)
     res.send(data_no_id)
+}
+
+
+
+export const getGlobal_chart_data = async (req: Request, res: Response) => {
+
+    const data: IChartData = req.body
+
+    const data_db = await chartFunction_Global(data)
+
+    res.send(data_db)
+
+
 }

@@ -1,8 +1,12 @@
 export type Settings = 'daily' | 'monthly' | 'yearly';
 
+type TDepartment = "GE" | "GBI" | "PFE" | "GlOBAL"
+
 export interface IChartData {
-    currentDate: Date,
-    settings: Settings
+    startDate: Date,
+    endDate: Date,
+    Department: TDepartment,
+    Settings: Settings
 }
 export interface IChartDataClient {
     day: number,

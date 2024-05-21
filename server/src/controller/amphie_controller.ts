@@ -5,6 +5,9 @@ import { validate_amphie_data } from "../utils/validation/type_validator"
 import { io } from "../server/socket"
 import { check_amphie_notification } from "../utils/functions/notifications"
 import { jsonToCSV } from "../utils/functions/csvconverter"
+import { IChartData } from "../utils/types/chart_type"
+import { getDataForDate_amphie } from "../utils/chart_filters/functions_amphie"
+import { chartFunction_Amphie } from "./chart_data/chart_data_amphie"
 
 
 const prisma = new PrismaClient()
@@ -58,5 +61,18 @@ export const amphie_export = async (req: Request, res: Response) => {
     })
     const csv_data = jsonToCSV(data_no_id)
     res.send(csv_data)
+
+}
+
+
+
+export const getAmphie_chart_data = async (req: Request, res: Response) => {
+
+    const data: IChartData = req.body
+
+    const data_db = await chartFunction_Amphie(data)
+
+    res.send(data_db)
+
 
 }
