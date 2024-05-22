@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Amphie {
+  id          Int      @id @default(autoincrement())
+  temperature String
+  co2_gaz     String
+  humidity    String
+  createdAt   DateTime @default(now())
+}
+
+model GlobalPM {
+  id                  Int      @id @default(autoincrement())
+  current             String
+  tension             String
+  puissance_active    String
+  puissance_reactive  String
+  puissance_apparente String
+  energy              String
+  createdAt           DateTime @default(now())
+}
+
+model GEDepartment {
+  id                  Int      @id @default(autoincrement())
+  current             String
+  tension             String
+  puissance_active    String
+  puissance_reactive  String
+  puissance_apparente String
+  energy              String
+  createdAt           DateTime @default(now())
+}
+
+model GBIDepartment {
+  id                  Int      @id @default(autoincrement())
+  current             String
+  tension             String
+  puissance_active    String
+  puissance_reactive  String
+  puissance_apparente String
+  energy              String
+  createdAt           DateTime @default(now())
+}
+
+model PFERoom {
+  id                  Int      @id @default(autoincrement())
+  current             String
+  tension             String
+  puissance_active    String
+  puissance_reactive  String
+  puissance_apparente String
+  energy              String
+  createdAt           DateTime @default(now())
+}
+
+model Notifcations {
+  id                  Int      @id @default(autoincrement())
+  notification        String
+  source              String
+  source_under_source String
+  createdAt           DateTime @default(now())
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String
+  password String
+}

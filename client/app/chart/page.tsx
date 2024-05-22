@@ -44,9 +44,7 @@ export default function Chart() {
     }, [router])
 
     const handleSearch = async () => {
-
         if (departmentValue != null && showValue != null && labelsFormat != null && startDateValue != null && endDateValue != null) {
-
             let settings: TSettings = "daily"
             let urlEndopoint = "http://localhost:4000/api/v1/global/chart"
 
@@ -57,16 +55,12 @@ export default function Chart() {
             } else {
                 settings = "yearly"
             }
-
-
             const data = {
                 "startDate": startDateValue,
                 "endDate": endDateValue,
                 "Department": departmentValue,
                 "Settings": settings
             }
-
-            // 'Global', 'Amphi', 'GE', 'GBI', 'PFE_SALLE'
             if (departmentValue === "Global") {
                 urlEndopoint = "http://localhost:4000/api/v1/global/chart"
             } else if (departmentValue === "Amphi") {
@@ -78,9 +72,6 @@ export default function Chart() {
             } else {
                 urlEndopoint = "http://localhost:4000/api/v1/pfe_room/chart"
             }
-
-            console.log(urlEndopoint)
-
             const response = await fetch(urlEndopoint, {
                 method: "POST",
                 headers: {

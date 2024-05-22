@@ -26,8 +26,6 @@ export const insertAmphi_data = async (req: Request, res: Response) => {
         const data_inserted = await prisma.amphie.create({
             data
         })
-        console.log(data_inserted)
-        io.emit("inserted_amphie_data", data_inserted);
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")
@@ -37,14 +35,8 @@ export const insertAmphi_data = async (req: Request, res: Response) => {
 
 export const amphie_realtime_forward = async (req: Request, res: Response) => {
     const data: IAmphieData = req.body;
-    console.log(data)
 
     if (validate_amphie_data(data)) {
-
-        const notification_body = check_amphie_notification(data)
-
-        //TODO:sending notifation to the client
-
         io.emit("amphie_realtime", data)
         res.send(data)
     } else {

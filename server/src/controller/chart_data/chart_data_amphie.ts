@@ -22,7 +22,4 @@ export const chartFunction_Amphie = async (data: IChartData) => {
         const data_db = await getDataForYear_amphie(dataArgs)
         return data_db
     }
-
-
-
 }

@@ -67,6 +67,7 @@ while True:
     print(temp)
 
 
+    amphie_realtime_url="http://localhost:4000/api/v1/amphie/realtime"
     amphie_data={
         "temperature":str(temp),
         "co2_gaz":"837",
