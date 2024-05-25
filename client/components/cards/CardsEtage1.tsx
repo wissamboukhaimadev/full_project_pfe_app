@@ -125,6 +125,22 @@ export default function CardsEtage1({ stage1_data }: TCartdStage1) {
                     </div>
                 </div>
             </motion.div>
+            <motion.div
+                className="mt-5 p-5 bg-white rounded-xl shadow-xl"
+                initial={{ y: 80, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ ease: "easeInOut", duration: 0.5 }}
+            >
+                <div className="flex justify-between">
+                    <div>
+                        <p className="font-bold text-lg" >Energy</p>
+                        <p className="text-xl font-semibold pl-3 mt-2">{energy ? energy : "--:--"}</p>
+                    </div>
+                    <div>
+                        <ThermometerSun />
+                    </div>
+                </div>
+            </motion.div>
         </>
     )
 }

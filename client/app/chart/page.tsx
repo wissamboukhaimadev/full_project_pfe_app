@@ -12,6 +12,7 @@ import '@mantine/dates/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ActionIcon, Button, MultiSelect, Popover, Select } from '@mantine/core'
 import { Search } from "lucide-react"
+import SideNavChart from '@/components/SideNavChart'
 
 
 type TSettings = "daily" | "monthly" | "yearly"
@@ -96,10 +97,7 @@ export default function Chart() {
         <div className="bg-pprimbg pt-5 px-5 ">
             <Header />
             <div className="flex">
-                <SideNav
-                    currentLabel={currentLabel}
-                    setCurrentLabel={setCurrentLabel}
-                />
+                <SideNavChart />
 
                 <div className="flex-grow mx-10 p-5 bg-white mt-5">
                     <div>

@@ -146,11 +146,11 @@ type TSwitchCardsByLabel = {
 function SwitchCardsByLabel({ label, amphie_data, global_data, stage1_data, stage2_data, stage3_data }: TSwitchCardsByLabel) {
   if (label === "Dashboard") {
     return <CardsGeneral global_data={global_data} />
-  } else if (label === "Etage 1") {
+  } else if (label === "GE_department") {
     return <CardsEtage1 stage1_data={stage1_data} />
-  } else if (label === "Etage 2") {
+  } else if (label === "GBI_department") {
     return <CardsEtage2 stage2_data={stage2_data} />
-  } else if (label === "Etage 3") {
+  } else if (label === "PFE_room") {
     return <CardsEtage3 stage3_data={stage3_data} />
   } else if (label === "Amphie") {
     return <CardsAmphie amphie_data={amphie_data} />
