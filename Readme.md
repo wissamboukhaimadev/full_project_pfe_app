@@ -1,3 +1,8 @@
+## Contributors
+- wissam boukhaima
+- khalid nait ouaissa
+- abdelmajid akbouch
+
 ## Requirements
 
 1. make sure you have postgres sql database installed in your system
