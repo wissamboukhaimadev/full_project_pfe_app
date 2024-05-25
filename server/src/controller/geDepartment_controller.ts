@@ -37,7 +37,6 @@ export const insertGEDepatment_data = async (req: Request, res: Response) => {
 export const GEDepatment_realtime_forward = async (req: Request, res: Response) => {
     const data: IStage1Data = req.body;
     if (validate_stage_data(data)) {
-        check_pm255_stage1_notification(data)
         io.emit("stage1_realtime", data)
         res.send(data)
     } else {
@@ -53,7 +52,7 @@ export const GEDepatment_export = async (req: Request, res: Response) => {
         return newItem
     })
     const csv_data = jsonToCSV(data_no_id)
-    res.send(stage1_data)
+    res.send(csv_data)
 }
 
 

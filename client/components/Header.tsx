@@ -4,10 +4,8 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import NotificationDrawer from './NotificationDrawer'
 import { useDisclosure } from '@mantine/hooks'
-import ConsumptionIcon from './icons/consumption'
-
-import { CiExport } from "react-icons/ci";
 import { FaFile } from "react-icons/fa";
+import ExportDownloadFile from './ExportDownloadFile'
 
 
 export default function Header() {
@@ -58,18 +56,9 @@ export default function Header() {
                 >
                     <BellRing className='ml-10 cursor-pointer' size={28} onClick={open} />
                 </Indicator>
-                <Menu>
-                    <Menu.Target>
-                        <Download className='ml-7 cursor-pointer' size={28} />
-                    </Menu.Target>
-                    <Menu.Dropdown>
-                        <Menu.Label>Export to</Menu.Label>
-                        <Menu.Item leftSection={<FaFile />} onClick={downloadCSVFile}>
-                            csv format
-                        </Menu.Item>
 
-                    </Menu.Dropdown>
-                </Menu>
+                <ExportDownloadFile />
+
                 <HandCoins className='ml-7 mr-5 cursor-pointer' size={28} />
                 {/* <ConsumptionIcon /> */}
             </div>

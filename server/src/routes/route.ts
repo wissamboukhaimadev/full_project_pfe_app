@@ -37,7 +37,7 @@ router.route("/ge_department/chart").post(getGe_chart_data)
 router.route("/gbi_department").get(getGbiDepartment_data)
 router.route("/gbi_department/insert").post(insertGbiDepartment_data)
 router.route("/gbi_department/realtime").post(GbiDepartment_realtime_forward)
-router.route("/gbi_department/export").post(GbiDepartment_export)
+router.route("/gbi_department/export").get(GbiDepartment_export)
 router.route("/gbi_department/chart").post(getGBI_chart_data)
 
 

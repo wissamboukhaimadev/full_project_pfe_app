@@ -87,19 +87,14 @@ export default function Home() {
         <SideNav
           currentLabel={currentLabel}
           setCurrentLabel={setCurrentLabel}
+          amphie_data={amphie_data}
         />
         <div className="main p-5 flex-grow">
           <div className="flex justify-between  ">
             <div>
-              <p className="text-2xl">Values Overview</p>
+              <p className="text-3xl font-semibold">Values Overview</p>
             </div>
-            <div className="w-1/5">
-              <DatePickerInput
-                placeholder="Select a date"
-                value={dateValue}
-                onChange={setDateValue}
-              />
-            </div>
+
           </div>
 
           <div className="flex justify-between ">

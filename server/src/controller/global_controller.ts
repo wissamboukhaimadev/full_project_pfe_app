@@ -33,7 +33,6 @@ export const insertGlobal_data = async (req: Request, res: Response) => {
 export const global_realtime_forward = async (req: Request, res: Response) => {
     const data: IStage1Data = req.body;
     if (validate_stage_data(data)) {
-        check_pm255_global_notification(data)
         io.emit("global_realtime", data)
         res.send(data)
     } else {
@@ -49,7 +48,7 @@ export const global_export = async (req: Request, res: Response) => {
         return newItem
     })
     const csv_data = jsonToCSV(data_no_id)
-    res.send(data_no_id)
+    res.send(csv_data)
 }
 
 

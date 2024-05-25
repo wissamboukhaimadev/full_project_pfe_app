@@ -32,7 +32,6 @@ export const insertPfeRoom_data = async (req: Request, res: Response) => {
 export const PfeRoom_realtime_forward = async (req: Request, res: Response) => {
     const data: IStage3Data = req.body;
     if (validate_stage_data(data)) {
-        check_pm255_stage3_notification(data)
         io.emit("stage3_realtime", data)
         res.send(data)
     } else {
@@ -48,7 +47,7 @@ export const PfeRoom_export = async (req: Request, res: Response) => {
         return newItem
     })
     const csv_data = jsonToCSV(data_no_id)
-    res.send(stage3_data)
+    res.send(csv_data)
 }
 
 

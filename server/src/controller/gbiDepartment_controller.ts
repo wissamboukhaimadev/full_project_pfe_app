@@ -33,7 +33,6 @@ export const insertGbiDepartment_data = async (req: Request, res: Response) => {
 export const GbiDepartment_realtime_forward = async (req: Request, res: Response) => {
     const data: IStage2Data = req.body;
     if (validate_stage_data(data)) {
-        check_pm255_stage2_notification(data)
         io.emit("stage2_realtime", data)
         res.send(data)
     } else {
@@ -49,7 +48,7 @@ export const GbiDepartment_export = async (req: Request, res: Response) => {
         return newItem
     })
     const csv_data = jsonToCSV(data_no_id)
-    res.send(stage2_data)
+    res.send(csv_data)
 }
 
 

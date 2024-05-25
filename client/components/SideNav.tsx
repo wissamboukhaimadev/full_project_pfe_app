@@ -4,14 +4,16 @@ import { Droplets, ThermometerSun } from 'lucide-react'
 import { motion } from "framer-motion"
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { IAmphieData } from '@/types/socket_types'
 
 
 type TSideNav = {
     currentLabel: navigation_labels,
     setCurrentLabel: Dispatch<SetStateAction<navigation_labels>>
+    amphie_data: IAmphieData
 }
 
-function SideNav({ currentLabel, setCurrentLabel }: TSideNav) {
+function SideNav({ currentLabel, setCurrentLabel, amphie_data }: TSideNav) {
 
     const router = useRouter()
 
@@ -42,8 +44,8 @@ function SideNav({ currentLabel, setCurrentLabel }: TSideNav) {
             <div className="mt-5 p-5 bg-white  rounded-xl shadow-xl">
                 <div className="flex justify-between">
                     <div>
-                        <p>Weather</p>
-                        <p className="text-xl font-semibold pl-3 mt-2">25%</p>
+                        <p className='font-semibold'>Weather</p>
+                        <p className="text-xl font-semibold pl-3 mt-2">{amphie_data.temperature ? `${amphie_data.temperature}°C` : '--:--'}</p>
                     </div>
                     <div>
                         <ThermometerSun />
@@ -55,8 +57,8 @@ function SideNav({ currentLabel, setCurrentLabel }: TSideNav) {
             <div className="mt-5 p-5 bg-white  rounded-xl shadow-xl">
                 <div className="flex justify-between">
                     <div>
-                        <p>Humidity</p>
-                        <p className="text-xl font-semibold pl-3 mt-2">40%</p>
+                        <p className='font-semibold'>Humidity</p>
+                        <p className="text-xl font-semibold pl-3 mt-2">{amphie_data.humidity ? `${amphie_data.humidity}%` : '--:--'}</p>
                     </div>
                     <div>
                         <Droplets />

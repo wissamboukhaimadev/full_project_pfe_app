@@ -1,4 +1,3 @@
-import fs from "fs";
 
 export const jsonToCSV = (amphie_json: any[]) => {
     if (amphie_json.length > 0) {
@@ -7,13 +6,7 @@ export const jsonToCSV = (amphie_json: any[]) => {
 
         const csv = [headers, ...main].join("\n")
 
-        fs.writeFile("/Users/user/Desktop/pfe/pprim_project/server/result.csv", csv, err => {
-            if (err) {
-                console.error(err)
-            } else {
-                console.log("write is succesfull")
-            }
-        })
+
         return csv
     }
 
