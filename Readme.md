@@ -1,8 +1,3 @@
-## Contributors
-- wissam boukhaima
-- khalid nait ouaissa
-- abdelmajid akbouch
-
 ## Requirements
 
 1. make sure you have postgres sql database installed in your system
@@ -63,7 +58,7 @@ model GlobalPM {
   createdAt           DateTime @default(now())
 }
 
-model Stage1 {
+model GEDepartment {
   id                  Int      @id @default(autoincrement())
   current             String
   tension             String
@@ -74,7 +69,7 @@ model Stage1 {
   createdAt           DateTime @default(now())
 }
 
-model Stage2 {
+model GBIDepartment {
   id                  Int      @id @default(autoincrement())
   current             String
   tension             String
@@ -85,7 +80,7 @@ model Stage2 {
   createdAt           DateTime @default(now())
 }
 
-model Stage3 {
+model PFERoom {
   id                  Int      @id @default(autoincrement())
   current             String
   tension             String
@@ -109,6 +104,7 @@ model User {
   username String
   password String
 }
+
 
 ```
 
