@@ -1,11 +1,9 @@
 "use client"
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import BarChart from '@/components/charts/BarChart'
 import Header from '@/components/Header'
-import SideNav from '@/components/SideNav'
-import { navigation_labels } from '@/utils/navigation'
 import { DatePickerInput } from '@mantine/dates'
 
 import '@mantine/dates/styles.css';
@@ -22,7 +20,12 @@ type TDepartment = "GE" | "GBI" | "PFE" | "GlOBAL"
 
 export default function Chart() {
 
-    const [currentLabel, setCurrentLabel] = useState<navigation_labels>("Dashboard")
+    const pathname = usePathname()
+
+
+    const [disablAnimations, setDisabelAnimations] = useState<boolean>(false)
+
+
     const [startDateValue, setStartDateValue] = useState<Date | null>(null)
     const [endDateValue, setEndDateValue] = useState<Date | null>(null)
 
@@ -36,13 +39,22 @@ export default function Chart() {
 
     useEffect(() => {
 
-        // const interval = setInterval(() => {
-        //     router.push('/');
-        // }, 5000);
 
-        // return () => clearInterval(interval);
+        // if (!disablAnimations) {
 
-    }, [router])
+        //     let interval: any
+        //     if (!disablAnimations) {
+        //         setInterval(() => {
+        //             router.push('/');
+        //         }, 5000);
+        //     }
+
+        //     return () => clearInterval(interval);
+        // }
+
+
+
+    }, [router, disablAnimations, pathname])
 
     const handleSearch = async () => {
         if (departmentValue != null && showValue != null && labelsFormat != null && startDateValue != null && endDateValue != null) {
@@ -95,7 +107,10 @@ export default function Chart() {
 
     return (
         <div className="bg-pprimbg pt-5 px-5 ">
-            <Header />
+            <Header
+                disablAnimations={disablAnimations}
+                setDisabelAnimations={setDisabelAnimations}
+            />
             <div className="flex">
                 <SideNavChart />
 

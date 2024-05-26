@@ -29,6 +29,8 @@ export default function Home() {
 
   const router = useRouter()
 
+  const [disablAnimations, setDisabelAnimations] = useState<boolean>(false)
+
   const [currentLabel, setCurrentLabel] = useState<navigation_labels>("Dashboard")
   const [dateValue, setDateValue] = useState<Date | null>(null)
 
@@ -57,31 +59,49 @@ export default function Home() {
       setStage3_Data(data)
     })
 
+    let state_interval: any
 
-    // const state_interval = setInterval(() => {
 
-    //   setCurrentLabel(prevLabel => {
-    //     const currentIndex = navigation_items.findIndex(item => item.label === prevLabel);
-    //     const nextIndex = (currentIndex + 1) % navigation_items.length;
-    //     return navigation_items[nextIndex].label;
-    //   });
+    if (!disablAnimations) {
+      state_interval = setInterval(() => {
 
-    //   if (currentLabel == "Amphie") {
-    //     router.push('/chart');
-    //   }
+        setCurrentLabel(prevLabel => {
+          const currentIndex = navigation_items.findIndex(item => item.label === prevLabel);
+          const nextIndex = (currentIndex + 1) % navigation_items.length;
+          return navigation_items[nextIndex].label;
+        });
 
-    // }, 2000);
+        localStorage.setItem("disableAnamtions", String(true))
+
+
+
+        if (currentLabel == "Amphie") {
+          router.push('/chart');
+        }
+
+      }, 2000);
+    } else {
+      localStorage.removeItem("disableAnamtions")
+    }
+
 
     return () => {
-      // clearInterval(state_interval)
+      clearInterval(state_interval)
       socket.off("amphie_realtime")
+      socket.off("global_realtime")
+      socket.off("stage1_realtime")
+      socket.off("stage2_realtime")
+      socket.off("stage3_realtime")
 
     };
-  }, [router, currentLabel])
+  }, [router, currentLabel, disablAnimations])
 
   return (
     <div className="bg-pprimbg pt-5 px-5 ">
-      <Header />
+      <Header
+        disablAnimations={disablAnimations}
+        setDisabelAnimations={setDisabelAnimations}
+      />
 
       <div className="flex">
         <SideNav

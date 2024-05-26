@@ -11,6 +11,7 @@ export const chartFunction_GEDepartment = async (data: IChartData) => {
 
     }
 
+
     if (data.Settings === "daily") {
         const data_db = await getDataForDate_ge(dataArgs)
         return data_db

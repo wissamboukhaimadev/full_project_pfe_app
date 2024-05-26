@@ -47,7 +47,6 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
         const endDate = new Date()
         endDate.setMonth(endDate.getMonth() + 1)
 
-        console.log(startDate + " " + endDate)
 
         const data_body = {
             "startDate": startDate,
@@ -94,7 +93,7 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
         labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', "August", "September", "October", "November", "December"]
     }
 
-    const colorMapping = {
+    const colorMapping: { [key: string]: string } = {
         Current: 'rgba(255, 99, 132, 0.2)',
         Tension: 'rgba(54, 162, 235, 0.2)',
         // Add more mappings for other possible values
@@ -108,7 +107,6 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
                     label: "Tension",
                     data: labels.map((_, index) => {
                         if (defaultChartData.length > 0) {
-                            console.log(defaultChartData)
                             if (defaultChartData[index]) return defaultChartData[index].tension;
                             return 0;
                         }
@@ -130,7 +128,6 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
             })),
     };
 
-    console.log(data_database)
 
     return (
         <Bar options={options} data={data} />

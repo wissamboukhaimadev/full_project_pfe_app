@@ -43,9 +43,11 @@ export async function getDataForDate_ge({ startDate, endDate }: IChartData) {
             },
         });
 
+
         data.forEach(({ createdAt, current, tension, puissance_active, puissance_reactive, puissance_apparente, energy }) => {
             let date = new Date(createdAt)
             let hour = date.getHours().toString()
+
 
             if (!average_data[hour]) {
                 average_data[hour] = {
@@ -83,6 +85,7 @@ export async function getDataForDate_ge({ startDate, endDate }: IChartData) {
 
         })
 
+
         const allHours = Array.from({ length: 24 }, (_, index) => index.toString())
 
         const result: IStage1Data[] = allHours.map(hour => {
@@ -103,7 +106,7 @@ export async function getDataForDate_ge({ startDate, endDate }: IChartData) {
             }
             return final_result
         })
-        return data;
+        return result;  // shit I was returning the wrong thing 😑
     } catch (error) {
         console.error(error);
         throw new Error('Error retrieving data for the date.');
