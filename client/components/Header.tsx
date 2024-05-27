@@ -41,8 +41,8 @@ export default function Header({ disablAnimations, setDisabelAnimations }: IHead
                 </Indicator>
 
                 <ExportDownloadFile />
-
-                <HandCoins className="ml-7 mr-5 cursor-pointer" size={28} />
+                <div className='mr-5' />
+                {/* <HandCoins className="ml-7 mr-5 cursor-pointer" size={28} /> */}
                 {/* <ConsumptionIcon /> */}
 
                 <Tooltip label="Turn ON/OFF animations" refProp="rootRef">

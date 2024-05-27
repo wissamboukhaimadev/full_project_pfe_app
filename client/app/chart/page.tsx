@@ -26,7 +26,7 @@ export default function Chart() {
     const pathname = usePathname()
 
 
-    const [disablAnimations, setDisabelAnimations] = useState<boolean>(false)
+    const [disablAnimations, setDisabelAnimations] = useState<boolean>(true)
 
 
     const [startDateValue, setStartDateValue] = useState<Date | null>(null)
