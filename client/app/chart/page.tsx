@@ -11,10 +11,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ActionIcon, Button, MultiSelect, Popover, Select } from '@mantine/core'
 import { Search } from "lucide-react"
 import SideNavChart from '@/components/SideNavChart'
+import { IAmphieData } from '@/types/socket_types'
+import socket from '@/utils/socket'
+import base_url from '@/utils/http'
 
 
 type TSettings = "daily" | "monthly" | "yearly"
-type TDepartment = "GE" | "GBI" | "PFE" | "GlOBAL"
+
 
 
 
@@ -35,21 +38,31 @@ export default function Chart() {
 
     const [dataDatabase, setDatatDatabase] = useState([])
 
+    const [amphie_data, setAmphie_Data] = useState<IAmphieData>({})
+
+
+
     const router = useRouter()
 
     useEffect(() => {
 
+        socket.on("amphie_realtime", (data: IAmphieData) => {
+            setAmphie_Data(data)
+        })
 
-        // if (!disablAnimations) {
+        let interval: any
+        if (!disablAnimations) {
 
-        //     let interval: any
-        //     if (!disablAnimations) {
-        //         setInterval(() => {
-        //             router.push('/');
-        //         }, 5000);
-        //     }
-
-        //     return () => clearInterval(interval);
+            if (!disablAnimations) {
+                interval = setInterval(() => {
+                    router.push('/');
+                }, 5000);
+            }
+        }
+        return () => {
+            clearInterval(interval)
+            socket.off("amphie_realtime")
+        }
         // }
 
 
@@ -59,7 +72,7 @@ export default function Chart() {
     const handleSearch = async () => {
         if (departmentValue != null && showValue != null && labelsFormat != null && startDateValue != null && endDateValue != null) {
             let settings: TSettings = "daily"
-            let urlEndopoint = "http://localhost:4000/api/v1/global/chart"
+            let urlEndopoint = base_url
 
             if (labelsFormat === "hours of day") {
                 settings = "daily"
@@ -75,15 +88,15 @@ export default function Chart() {
                 "Settings": settings
             }
             if (departmentValue === "Global") {
-                urlEndopoint = "http://localhost:4000/api/v1/global/chart"
+                urlEndopoint = `${base_url}/api/v1/global/chart`
             } else if (departmentValue === "Amphi") {
-                urlEndopoint = "http://localhost:4000/api/v1/amphie/chart"
+                urlEndopoint = `${base_url}/api/v1/amphie/chart`
             } else if (departmentValue === "GE") {
-                urlEndopoint = "http://localhost:4000/api/v1/ge_department/chart"
+                urlEndopoint = `${base_url}/api/v1/ge_department/chart`
             } else if (departmentValue === "GBi") {
-                urlEndopoint = "http://localhost:4000/api/v1/gbi_department/chart"
+                urlEndopoint = `${base_url}/api/v1/gbi_department/chart`
             } else {
-                urlEndopoint = "http://localhost:4000/api/v1/pfe_room/chart"
+                urlEndopoint = `${base_url}/api/v1/pfe_room/chart`
             }
             const response = await fetch(urlEndopoint, {
                 method: "POST",
@@ -95,6 +108,8 @@ export default function Chart() {
             })
 
             const data_json = await response.json()
+
+            console.log(data_json)
             setDatatDatabase(data_json)
 
 
@@ -106,13 +121,13 @@ export default function Chart() {
 
 
     return (
-        <div className="bg-pprimbg pt-5 px-5 ">
+        <div className="bg-pprimbg pt-5 px-5 h-screen">
             <Header
                 disablAnimations={disablAnimations}
                 setDisabelAnimations={setDisabelAnimations}
             />
             <div className="flex">
-                <SideNavChart />
+                <SideNavChart amphie_data={amphie_data} />
 
                 <div className="flex-grow mx-10 p-5 bg-white mt-5">
                     <div>
@@ -139,7 +154,7 @@ export default function Chart() {
                                                 value={showValue}
                                                 onChange={setShowValue}
                                                 placeholder="Pick value"
-                                                data={['Current', 'Tension']}
+                                                data={['Current', 'Tension', 'puissance_active', 'puissance_reactive', 'puissance_apparente']}
                                                 comboboxProps={{ withinPortal: false }}
                                             />
                                             <Select

@@ -1,4 +1,4 @@
-export type navigation_labels = "Dashboard" | "GE_department" | "GBI_department" | "PFE_room" | "Amphie"
+export type navigation_labels = "Dashboard" | "GE_department" | "Electrotechnique" | "P & A & P" | "Amphie"
 
 interface INavigationItems {
     label: navigation_labels
@@ -17,10 +17,10 @@ export const navigation_items: INavigationItems[] = [
         label: "GE_department"
     },
     {
-        label: "GBI_department"
+        label: "Electrotechnique"
     },
     {
-        label: "PFE_room"
+        label: "P & A & P"
     },
 
 ]

@@ -9,19 +9,17 @@ import CardsEtage3 from "@/components/cards/CardsEtage3";
 import CardsGeneral from "@/components/cards/CardsGeneral";
 import DognutChart from "@/components/charts/DognutChart";
 import { navigation_items, navigation_labels } from "@/utils/navigation";
-import { DatePickerInput } from "@mantine/dates";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { motion } from "framer-motion"
 import '@mantine/dates/styles.css';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-import io from "socket.io-client"
-import { IAllPMData, IAmphieData } from "@/types/socket_types";
 
-const socket = io("ws://localhost:4000")
+import { IAllPMData, IAmphieData } from "@/types/socket_types";
+import socket from "@/utils/socket";
+
 
 
 
@@ -32,7 +30,6 @@ export default function Home() {
   const [disablAnimations, setDisabelAnimations] = useState<boolean>(false)
 
   const [currentLabel, setCurrentLabel] = useState<navigation_labels>("Dashboard")
-  const [dateValue, setDateValue] = useState<Date | null>(null)
 
   const [amphie_data, setAmphie_Data] = useState<IAmphieData>({})
   const [globalPM_data, setGlobalPM_Data] = useState<IAllPMData>({})
@@ -97,7 +94,9 @@ export default function Home() {
   }, [router, currentLabel, disablAnimations])
 
   return (
-    <div className="bg-pprimbg pt-5 px-5 ">
+    <div className="bg-pprimbg pt-5 px-5 flex-grow  ">
+
+
       <Header
         disablAnimations={disablAnimations}
         setDisabelAnimations={setDisabelAnimations}
@@ -163,9 +162,9 @@ function SwitchCardsByLabel({ label, amphie_data, global_data, stage1_data, stag
     return <CardsGeneral global_data={global_data} />
   } else if (label === "GE_department") {
     return <CardsEtage1 stage1_data={stage1_data} />
-  } else if (label === "GBI_department") {
+  } else if (label === "Electrotechnique") {
     return <CardsEtage2 stage2_data={stage2_data} />
-  } else if (label === "PFE_room") {
+  } else if (label === "P & A & P") {
     return <CardsEtage3 stage3_data={stage3_data} />
   } else if (label === "Amphie") {
     return <CardsAmphie amphie_data={amphie_data} />

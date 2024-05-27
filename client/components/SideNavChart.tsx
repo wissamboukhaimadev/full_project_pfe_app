@@ -2,18 +2,17 @@ import { navigation_items, navigation_labels } from '@/utils/navigation'
 import { Progress } from '@mantine/core'
 import { Droplets, ThermometerSun } from 'lucide-react'
 import { motion } from "framer-motion"
-import { Dispatch, SetStateAction, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { IAmphieData } from '@/types/socket_types'
 
 
-type TSideNav = {
-    currentLabel: navigation_labels,
-    setCurrentLabel: Dispatch<SetStateAction<navigation_labels>>
+interface SideNavChartProps {
+    amphie_data: IAmphieData,
 }
 
-function SideNavChart() {
 
-    const router = useRouter()
+function SideNavChart({ amphie_data }: SideNavChartProps) {
+
+    const { temperature, humidity } = amphie_data
 
     return (
         <motion.div
@@ -28,26 +27,26 @@ function SideNavChart() {
                 <div className="flex justify-between">
                     <div>
                         <p>Weather</p>
-                        <p className="text-xl font-semibold pl-3 mt-2">25%</p>
+                        <p className="text-xl font-semibold pl-3 mt-2">{temperature ? `${temperature}°C` : '--:--'}</p>
                     </div>
                     <div>
                         <ThermometerSun />
                     </div>
                 </div>
-                <Progress className="mt-3 " value={25} size={"lg"} />
+                <Progress className="mt-3 " value={temperature ? parseInt(temperature) : 0} size={"lg"} />
             </div>
 
             <div className="mt-5 p-5 bg-white  rounded-xl shadow-xl">
                 <div className="flex justify-between">
                     <div>
                         <p>Humidity</p>
-                        <p className="text-xl font-semibold pl-3 mt-2">40%</p>
+                        <p className="text-xl font-semibold pl-3 mt-2">{humidity ? `${humidity}%` : '--:--'}</p>
                     </div>
                     <div>
                         <Droplets />
                     </div>
                 </div>
-                <Progress className="mt-3 " value={40} color="orange" size={"lg"} />
+                <Progress className="mt-3 " value={humidity ? parseInt(humidity) : 0} color="orange" size={"lg"} />
             </div>
 
         </motion.div >

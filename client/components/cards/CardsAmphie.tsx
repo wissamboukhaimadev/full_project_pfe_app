@@ -30,7 +30,7 @@ type TCardsAmphie = {
 
 export default function CardsAmphie({ amphie_data }: TCardsAmphie) {
 
-    const { temperature, humidity, co2_gaz } = amphie_data
+    const { temperature, humidity } = amphie_data
     return (
         <>
 
@@ -66,22 +66,7 @@ export default function CardsAmphie({ amphie_data }: TCardsAmphie) {
                     </div>
                 </div>
             </motion.div>
-            <motion.div
-                className="mt-5 p-5 bg-white rounded-xl shadow-xl"
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ ease: "easeInOut", duration: 0.7 }}
-            >
-                <div className="flex justify-between">
-                    <div>
-                        <p className="font-bold text-lg" >Co2</p>
-                        <p className="text-xl font-semibold pl-3 mt-2">{co2_gaz ? co2_gaz : '--:--'}</p>
-                    </div>
-                    <div>
-                        <ThermometerSun />
-                    </div>
-                </div>
-            </motion.div>
+
 
 
 

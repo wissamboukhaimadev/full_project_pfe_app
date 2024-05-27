@@ -51,7 +51,7 @@ function SideNav({ currentLabel, setCurrentLabel, amphie_data }: TSideNav) {
                         <ThermometerSun />
                     </div>
                 </div>
-                <Progress className="mt-3 " value={25} size={"lg"} />
+                <Progress className="mt-3 " value={amphie_data.temperature ? parseInt(amphie_data.temperature) : 0} size={"lg"} />
             </div>
 
             <div className="mt-5 p-5 bg-white  rounded-xl shadow-xl">
@@ -64,7 +64,7 @@ function SideNav({ currentLabel, setCurrentLabel, amphie_data }: TSideNav) {
                         <Droplets />
                     </div>
                 </div>
-                <Progress className="mt-3 " value={40} color="orange" size={"lg"} />
+                <Progress className="mt-3 " value={amphie_data.humidity ? parseInt(amphie_data.humidity) : 0} color="orange" size={"lg"} />
             </div>
 
         </motion.div >

@@ -1,3 +1,4 @@
+import base_url from '@/utils/http';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -31,7 +32,7 @@ interface IBarChart {
 
 }
 
-export default function BarChart({ data_database, labelsFormat, selectedDepartment, showValue }: IBarChart) {
+export default function BarChart({ data_database, labelsFormat, showValue }: IBarChart) {
 
     const [defaultChartData, setDefaultChatData] = useState<any>([])
 
@@ -55,7 +56,7 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
             "Settings": "yearly"
         }
 
-        const response = await fetch("http://localhost:4000/api/v1/global/chart", {
+        const response = await fetch(`${base_url}/api/v1/global/chart`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -65,6 +66,7 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
         })
 
         const data_json = await response.json()
+
 
         setDefaultChatData(data_json)
 
@@ -94,8 +96,11 @@ export default function BarChart({ data_database, labelsFormat, selectedDepartme
     }
 
     const colorMapping: { [key: string]: string } = {
-        Current: 'rgba(255, 99, 132, 0.2)',
-        Tension: 'rgba(54, 162, 235, 0.2)',
+        Current: 'rgba(240, 58, 12, 0.7)',
+        Tension: 'rgba(3, 82, 252, 0.7)',
+        puissance_active: 'rgba(240, 156, 12, 1)',
+        puissance_reactive: 'rgba(12, 240, 61, 1)',
+        puissance_apparente: 'rgba(145, 12, 240, 1)',
         // Add more mappings for other possible values
     };
 
