@@ -22,7 +22,7 @@ export const insertPfeRoom_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage3Data = await prisma.pFERoom.create({ data })
-        io.emit("inserted_stage3_data", data_inserted)
+        check_pm255_stage3_notification(data)
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")

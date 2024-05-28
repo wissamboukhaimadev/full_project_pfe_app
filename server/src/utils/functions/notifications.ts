@@ -2,6 +2,8 @@ import { io } from "../../server/socket"
 import { prisma } from "../prisma_client"
 import { IAmphieData, IStage1Data } from "../types/body_data_type"
 import { IAmphie_Data_Socket_Notifications, IStage_Data_Socket_Notifications } from "../types/notifications"
+import { send_email_amphie } from "./notifications/send_email_amphie"
+import { send_email_central } from "./notifications/send_email_central"
 
 
 const amphi_source = "AMPHIE"
@@ -32,6 +34,7 @@ export const check_amphie_notification = async (data: IAmphieData) => {
 
 
 
+
     } else if (parseInt(result.temperature) < 5) {
         result.notification.temperature = "hey temperature est inferieur a 5"
 
@@ -58,37 +61,11 @@ export const check_amphie_notification = async (data: IAmphieData) => {
     }
 
 
-    // send notifications
-    if (result.temperature !== "") {
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.temperature,
-                source: amphi_source,
-                source_under_source: temperature_source
-            }
-        })
-    }
-    if (result.humidity !== "") {
-
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.humidity,
-                source: amphi_source,
-                source_under_source: humidity_source
-            }
-        })
-
-    }
-    if (result.co2_gaz !== "") {
-
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.co2_gaz,
-                source: amphi_source,
-                source_under_source: co2_source
-            }
-        })
-
+    if (result.notification.temperature !== "" || result.notification.humidity !== "") {
+        // TODO: send mail
+        send_email_amphie(result.temperature, result.humidity)
+    } else {
+        console.log("no_notification \n")
     }
 
     return result.notification
@@ -134,28 +111,6 @@ export const check_pm255_global_notification = async (data: IStage1Data) => {
 
 
 
-    // send notifications
-    if (result.current !== "") {
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.current,
-                source: global_source,
-                source_under_source: current_source
-            }
-        })
-    }
-    if (result.tension !== "") {
-
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.tension,
-                source: global_source,
-                source_under_source: tension_source
-            }
-        })
-
-    }
-
 
     return result.notification
 
@@ -195,26 +150,11 @@ export const check_pm255_stage1_notification = async (data: IStage1Data) => {
     }
 
 
-    // send notifications
-    if (result.current !== "") {
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.current,
-                source: stage1_source,
-                source_under_source: current_source
-            }
-        })
-    }
-    if (result.tension !== "") {
-
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.tension,
-                source: stage1_source,
-                source_under_source: tension_source
-            }
-        })
-
+    if (result.notification.current !== "" || result.notification.tension !== "") {
+        // TODO: send mail
+        send_email_central(result.current, result.tension)
+    } else {
+        console.log("no_notification \n")
     }
 
     return result.notification
@@ -254,27 +194,13 @@ export const check_pm255_stage2_notification = async (data: IStage1Data) => {
     }
 
 
-    // send notifications
-    if (result.current !== "") {
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.current,
-                source: stage2_source,
-                source_under_source: current_source
-            }
-        })
+    if (result.notification.current !== "" || result.notification.tension !== "") {
+        // TODO: send mail
+        send_email_central(result.current, result.tension)
+    } else {
+        console.log("no_notification \n")
     }
-    if (result.tension !== "") {
 
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.tension,
-                source: stage2_source,
-                source_under_source: tension_source
-            }
-        })
-
-    }
     return result.notification
 
 }
@@ -311,26 +237,11 @@ export const check_pm255_stage3_notification = async (data: IStage1Data) => {
         io.emit("stage3_notifications", result.notification)
     }
 
-    // send notifications
-    if (result.current !== "") {
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.current,
-                source: stage3_source,
-                source_under_source: current_source
-            }
-        })
-    }
-    if (result.tension !== "") {
-
-        await prisma.notifcations.create({
-            data: {
-                notification: result.notification.tension,
-                source: stage3_source,
-                source_under_source: tension_source
-            }
-        })
-
+    if (result.notification.current !== "" || result.notification.tension !== "") {
+        // TODO: send mail
+        send_email_central(result.current, result.tension)
+    } else {
+        console.log("no_notification \n")
     }
 
     return result.notification

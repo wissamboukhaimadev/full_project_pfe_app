@@ -17,6 +17,8 @@ pfe_db_url="http://localhost:4000/api/v1/pfe_room/insert"
 
 counter=0
 
+COM_PORT='COM9'
+
 def generateur_trame(REGISTER_ADDRESS, NOMBRE_REGISTER, MODBUS_ADDRESS):
 
     frame = bytearray([
@@ -42,7 +44,7 @@ def generateur_trame(REGISTER_ADDRESS, NOMBRE_REGISTER, MODBUS_ADDRESS):
     frame[-2] = crc & 0xFF  
     frame[-1] = crc >> 8    
 
-    ser = serial.Serial('COM9', 9600, timeout=3)
+    ser = serial.Serial(COM_PORT, 9600, timeout=3)
 
     if ser.isOpen():
         print(f'Le port {ser.name} est ouvert.')

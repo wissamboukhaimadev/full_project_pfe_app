@@ -22,7 +22,7 @@ export const insertGbiDepartment_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage2Data = await prisma.gBIDepartment.create({ data })
-        io.emit("inserted_stage2_data", data_inserted)
+        check_pm255_stage2_notification(data)
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")
