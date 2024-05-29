@@ -39,6 +39,7 @@ export const amphie_realtime_forward = async (req: Request, res: Response) => {
 
     if (validate_amphie_data(data)) {
 
+        check_amphie_notification(data)
         io.emit("amphie_realtime", data)
         res.send(data)
     } else {

@@ -1,23 +1,11 @@
 import { io } from "../../server/socket"
-import { prisma } from "../prisma_client"
 import { IAmphieData, IStage1Data } from "../types/body_data_type"
 import { IAmphie_Data_Socket_Notifications, IStage_Data_Socket_Notifications } from "../types/notifications"
 import { send_email_amphie } from "./notifications/send_email_amphie"
-import { send_email_central } from "./notifications/send_email_central"
+import { send_email_electrotechnique } from "./notifications/send_email_electrotechnique"
+import { send_email_ge } from "./notifications/send_email_ge"
+import { send_email_pfe_room } from "./notifications/send_email_pfe_room"
 
-
-const amphi_source = "AMPHIE"
-const global_source = "GLOBAL"
-const stage1_source = "STAGE1"
-const stage2_source = "STAGE2"
-const stage3_source = "STAGE3"
-
-
-const temperature_source = "TEMPERATURE"
-const humidity_source = "HUMIDITY"
-const co2_source = "CO2"
-const tension_source = "TENSION"
-const current_source = "CURRENT"
 
 export const check_amphie_notification = async (data: IAmphieData) => {
     const result: IAmphie_Data_Socket_Notifications = {
@@ -117,7 +105,7 @@ export const check_pm255_global_notification = async (data: IStage1Data) => {
 
 }
 
-export const check_pm255_stage1_notification = async (data: IStage1Data) => {
+export const check_pm255_ge_notification = async (data: IStage1Data) => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -152,7 +140,7 @@ export const check_pm255_stage1_notification = async (data: IStage1Data) => {
 
     if (result.notification.current !== "" || result.notification.tension !== "") {
         // TODO: send mail
-        send_email_central(result.current, result.tension)
+        send_email_ge(result.current, result.tension)
     } else {
         console.log("no_notification \n")
     }
@@ -160,7 +148,7 @@ export const check_pm255_stage1_notification = async (data: IStage1Data) => {
     return result.notification
 
 }
-export const check_pm255_stage2_notification = async (data: IStage1Data) => {
+export const check_pm255_electrotechnique_notification = async (data: IStage1Data) => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -196,7 +184,7 @@ export const check_pm255_stage2_notification = async (data: IStage1Data) => {
 
     if (result.notification.current !== "" || result.notification.tension !== "") {
         // TODO: send mail
-        send_email_central(result.current, result.tension)
+        send_email_electrotechnique(result.current, result.tension)
     } else {
         console.log("no_notification \n")
     }
@@ -204,7 +192,7 @@ export const check_pm255_stage2_notification = async (data: IStage1Data) => {
     return result.notification
 
 }
-export const check_pm255_stage3_notification = async (data: IStage1Data) => {
+export const check_pm255_pfe_room_notification = async (data: IStage1Data) => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -239,7 +227,7 @@ export const check_pm255_stage3_notification = async (data: IStage1Data) => {
 
     if (result.notification.current !== "" || result.notification.tension !== "") {
         // TODO: send mail
-        send_email_central(result.current, result.tension)
+        send_email_pfe_room(result.current, result.tension)
     } else {
         console.log("no_notification \n")
     }

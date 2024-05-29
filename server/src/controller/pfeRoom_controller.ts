@@ -3,10 +3,10 @@ import { Request, Response } from "express"
 import { IStage3Data } from "../utils/types/body_data_type"
 import { validate_stage_data } from "../utils/validation/type_validator"
 import { io } from "../server/socket"
-import { check_pm255_stage3_notification } from "../utils/functions/notifications"
 import { jsonToCSV } from "../utils/functions/csvconverter"
 import { IChartData } from "../utils/types/chart_type"
 import { chartFunction_PfeRoom } from "./chart_data/chart_data_pfe_room"
+import { check_pm255_pfe_room_notification } from "../utils/functions/notifications"
 
 
 
@@ -22,7 +22,7 @@ export const insertPfeRoom_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage3Data = await prisma.pFERoom.create({ data })
-        check_pm255_stage3_notification(data)
+        check_pm255_pfe_room_notification(data)
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")

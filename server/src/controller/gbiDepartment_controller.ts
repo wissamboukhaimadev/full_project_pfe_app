@@ -3,10 +3,10 @@ import { Request, Response } from "express"
 import { IStage2Data } from "../utils/types/body_data_type"
 import { validate_stage_data } from "../utils/validation/type_validator"
 import { io } from "../server/socket"
-import { check_pm255_stage2_notification } from "../utils/functions/notifications"
 import { jsonToCSV } from "../utils/functions/csvconverter"
 import { chartFunction_GBIDepartment } from "./chart_data/chart_data_gbi_department"
 import { IChartData } from "../utils/types/chart_type"
+import { check_pm255_electrotechnique_notification } from "../utils/functions/notifications"
 
 
 const prisma = new PrismaClient()
@@ -22,7 +22,7 @@ export const insertGbiDepartment_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage2Data = await prisma.gBIDepartment.create({ data })
-        check_pm255_stage2_notification(data)
+        check_pm255_electrotechnique_notification(data)
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")

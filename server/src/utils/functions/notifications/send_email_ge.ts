@@ -1,13 +1,13 @@
 import nodemailer from "nodemailer"
 
 
-export const send_email_amphie = (temperature: string, humidity: string) => {
+export const send_email_ge = (current: string, tension: string) => {
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'boukhaimawissam2004@gmail.com', // your Gmail address
-            pass: process.env.APPLICATION_PASSWORD as string//app password
+            pass: process.env.APPLICATION_PASSWORD //app password
         }
     });
 
@@ -16,10 +16,10 @@ export const send_email_amphie = (temperature: string, humidity: string) => {
         to: 'akbouchabdelmajid@gmail.com',
         subject: 'Notifications',
         html: `
-    <h2>Urgent Notification</h2>
-    <p>the current values of temperature and humidty are as follows: </p>
-    <p>temperature : ${temperature} </p>
-    <p>humidity : ${humidity} </p>
+        <h2>Urgent Notification</h2>
+        <p>the current values of the current and tension are as follows: </p>
+        <p>current : ${current} </p>
+        <p>tension : ${tension} </p>
     `,
     };
 

@@ -6,6 +6,7 @@ import { io } from "../server/socket"
 import { jsonToCSV } from "../utils/functions/csvconverter"
 import { IChartData } from "../utils/types/chart_type"
 import { chartFunction_Global } from "./chart_data/chart_data_global"
+import { check_pm255_global_notification } from "../utils/functions/notifications"
 
 
 const prisma = new PrismaClient()
@@ -21,6 +22,7 @@ export const insertGlobal_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage1Data = await prisma.globalPM.create({ data })
+        check_pm255_global_notification(data)
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")

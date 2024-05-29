@@ -9,8 +9,8 @@ amphie_db_url="http://localhost:4000/api/v1/amphie/insert"
 ge_realtime_url="http://localhost:4000/api/v1/ge_department/realtime"
 ge_db_url="http://localhost:4000/api/v1/ge_department/insert"
 
-gbi_realtime_url="http://localhost:4000/api/v1/gbi_department/realtime"
-gbi_db_url="http://localhost:4000/api/v1/gbi_department/insert"
+electrotechnique_realtime_url="http://localhost:4000/api/v1/gbi_department/realtime"
+electrotechnique_db_url="http://localhost:4000/api/v1/gbi_department/insert"
 
 pfe_realtime_url="http://localhost:4000/api/v1/pfe_room/realtime"
 pfe_db_url="http://localhost:4000/api/v1/pfe_room/insert"
@@ -112,7 +112,7 @@ while True:
     time.sleep(1)
     E = extracteur_donnee(generateur_trame(0xB06D, 2, 2))
     time.sleep(1)
-    gbi_data={
+    electrotechnique_data={
         "tension":str(Tension), 
         "current":str(Courant), 
         "puissance_active":str(PAT), 
@@ -120,10 +120,10 @@ while True:
         "puissance_reactive":str(PRT), 
         "energy":str(E)
     }
-    print(gbi_data)
-    data=requests.post(gbi_realtime_url,json=gbi_data)
+    print(electrotechnique_data)
+    data=requests.post(electrotechnique_realtime_url,json=electrotechnique_data)
     if(counter==5):
-        data=requests.post(gbi_db_url,json=gbi_data)
+        data=requests.post(electrotechnique_db_url,json=electrotechnique_data)
 
 
     # GE

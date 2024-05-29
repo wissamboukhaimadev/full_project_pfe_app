@@ -87,13 +87,11 @@ export default function Chart() {
                 "Department": departmentValue,
                 "Settings": settings
             }
-            if (departmentValue === "Global") {
-                urlEndopoint = `${base_url}/api/v1/global/chart`
-            } else if (departmentValue === "Amphi") {
+            if (departmentValue === "Amphi") {
                 urlEndopoint = `${base_url}/api/v1/amphie/chart`
             } else if (departmentValue === "GE") {
                 urlEndopoint = `${base_url}/api/v1/ge_department/chart`
-            } else if (departmentValue === "GBi") {
+            } else if (departmentValue === "ELECTROTECHNIQUE") {
                 urlEndopoint = `${base_url}/api/v1/gbi_department/chart`
             } else {
                 urlEndopoint = `${base_url}/api/v1/pfe_room/chart`
@@ -145,7 +143,7 @@ export default function Chart() {
                                                 value={departmentValue}
                                                 onChange={setDepartmentValue}
                                                 placeholder="Pick value"
-                                                data={['Global', 'GE', 'GBI', 'PFE_SALLE']}
+                                                data={['GE', 'ELECTROTECHNIQUE', 'P & A & P']}
                                                 comboboxProps={{ withinPortal: false }}
                                             />
                                             <MultiSelect

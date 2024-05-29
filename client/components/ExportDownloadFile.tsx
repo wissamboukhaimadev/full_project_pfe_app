@@ -16,18 +16,18 @@ export default function ExportDownloadFile() {
 
             url = 'http://localhost:4000/api/v1/amphie/export';
             file_name = "amphie_data.csv"
-        } else if (departmentName === "GBI") {
+        } else if (departmentName === "ELECTROTECHNIQUE") {
             url = "http://localhost:4000/api/v1/gbi_department/export"
             file_name = "gbi_department_data.csv"
         } else if (departmentName === "GE") {
             url = "http://localhost:4000/api/v1/ge_department/export"
             file_name = "ge_department_data.csv"
-        } else if (departmentName === "PFE") {
+        } else if (departmentName === "P & A & P") {
             url = "http://localhost:4000/api/v1/pfe_room/export"
             file_name = "pfe_room_data.csv"
         } else {
-            url = "http://localhost:4000/api/v1/global/export"
-            file_name = "global_data.csv"
+            url = "http://localhost:4000/api/v1/ge_department/export"
+            file_name = "ge_department_data.csv"
         }
 
         const response = await fetch(url, {
@@ -69,7 +69,7 @@ export default function ExportDownloadFile() {
                 <p className='mb-2 mt-2'>Select a department</p>
                 <Select
                     placeholder='select department'
-                    data={['Amphi', 'GLOBAL', 'GBI', 'GE', 'PFE']}
+                    data={['Amphi', 'GE', 'ELECTROTECHNIQUE', 'P & A & P']}
                     value={departmentName}
                     onChange={setDepartmentName}
                 />
