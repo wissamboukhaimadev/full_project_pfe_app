@@ -17,7 +17,7 @@ export const send_email_amphie = (temperature: string, humidity: string) => {
         subject: 'Notifications',
         html: `
     <h2>Urgent Notification</h2>
-    <p>the current values of temperature and humidty are as follows: </p>
+    <p>the current values in amphie room of temperature and humidty are as follows: </p>
     <p>temperature : ${temperature} </p>
     <p>humidity : ${humidity} </p>
     `,

@@ -9,6 +9,7 @@ import {
     Legend,
 } from 'chart.js';
 import { useEffect, useState } from 'react';
+
 import { Bar } from 'react-chartjs-2';
 
 

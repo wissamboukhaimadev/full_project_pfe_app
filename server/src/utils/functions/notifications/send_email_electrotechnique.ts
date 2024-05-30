@@ -17,7 +17,7 @@ export const send_email_electrotechnique = (current: string, tension: string) =>
         subject: 'Notifications',
         html: `
         <h2>Urgent Notification</h2>
-        <p>the current values of the current and tension are as follows: </p>
+        <p>the current values in the electrotechnique room of the current and tension are as follows: </p>
         <p>current : ${current} </p>
         <p>tension : ${tension} </p>
     `,

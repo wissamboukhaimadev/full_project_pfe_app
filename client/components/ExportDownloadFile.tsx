@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Button, Modal, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Download } from 'lucide-react'
+import base_url from '@/utils/http';
 
 export default function ExportDownloadFile() {
 
@@ -14,19 +15,19 @@ export default function ExportDownloadFile() {
         let file_name = ""
         if (departmentName === "Amphi") {
 
-            url = 'http://localhost:4000/api/v1/amphie/export';
+            url = `${base_url}/api/v1/amphie/export`;
             file_name = "amphie_data.csv"
         } else if (departmentName === "ELECTROTECHNIQUE") {
-            url = "http://localhost:4000/api/v1/gbi_department/export"
+            url = `${base_url}/api/v1/gbi_department/export`
             file_name = "gbi_department_data.csv"
         } else if (departmentName === "GE") {
-            url = "http://localhost:4000/api/v1/ge_department/export"
+            url = `${base_url}/api/v1/ge_department/export`
             file_name = "ge_department_data.csv"
         } else if (departmentName === "P & A & P") {
-            url = "http://localhost:4000/api/v1/pfe_room/export"
+            url = `${base_url}/api/v1/pfe_room/export`
             file_name = "pfe_room_data.csv"
         } else {
-            url = "http://localhost:4000/api/v1/ge_department/export"
+            url = `${base_url}/api/v1/ge_department/export`
             file_name = "ge_department_data.csv"
         }
 
