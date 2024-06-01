@@ -9,15 +9,13 @@ amphie_db_url="http://localhost:4000/api/v1/amphie/insert"
 ge_realtime_url="http://localhost:4000/api/v1/ge_department/realtime"
 ge_db_url="http://localhost:4000/api/v1/ge_department/insert"
 
-electrotechnique_realtime_url="http://localhost:4000/api/v1/gbi_department/realtime"
-electrotechnique_db_url="http://localhost:4000/api/v1/gbi_department/insert"
+ET_realtime_url="http://localhost:4000/api/v1/gbi_department/realtime"
+ET_db_url="http://localhost:4000/api/v1/gbi_department/insert"
 
 pfe_realtime_url="http://localhost:4000/api/v1/pfe_room/realtime"
 pfe_db_url="http://localhost:4000/api/v1/pfe_room/insert"
 
 counter=0
-
-COM_PORT='COM9'
 
 def generateur_trame(REGISTER_ADDRESS, NOMBRE_REGISTER, MODBUS_ADDRESS):
 
@@ -44,7 +42,7 @@ def generateur_trame(REGISTER_ADDRESS, NOMBRE_REGISTER, MODBUS_ADDRESS):
     frame[-2] = crc & 0xFF  
     frame[-1] = crc >> 8    
 
-    ser = serial.Serial(COM_PORT, 9600, timeout=3)
+    ser = serial.Serial('COM7', 9600, timeout=3)
 
     if ser.isOpen():
         print(f'Le port {ser.name} est ouvert.')
@@ -57,8 +55,6 @@ def generateur_trame(REGISTER_ADDRESS, NOMBRE_REGISTER, MODBUS_ADDRESS):
 
     try:
         reponse = ser.read(NOMBRE_REGISTER*2 + 5)
-        if not 0 in reponse:
-            reponse = bytearray([0,0,0,0,0,0,0,0,])
         print('Reponse recue :', reponse.hex())
     except Exception | serial.SerialException as e:
         print(f'Erreur lors de la reception des donnees : {e}')
@@ -86,45 +82,43 @@ def extracteur_donnee(trame):
 while True:
     counter+=1
     # La temperature et l'humidité
-    hum_temp = extracteur_donnee(generateur_trame(0, 2, 1))
-    time.sleep(1)
-    amphie_data={
-        "temperature":str(hum_temp[1]),
-        "co2_gaz":"111",
-        "humidity":str(hum_temp[0])
-    }
-    print(amphie_data)
-    data=requests.post(amphie_realtime_url,json=amphie_data)
-    if(counter==5):
-        data=requests.post(amphie_db_url,json=amphie_data)
-    
-
-    # gbi
-    Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 2))
-    time.sleep(1)
-    Courant = extracteur_donnee(generateur_trame(0x0BC1, 2, 2))
-    time.sleep(1)
-    PAT = extracteur_donnee(generateur_trame(0x0BF3, 2, 2))
-    time.sleep(1)
-    PRT = extracteur_donnee(generateur_trame(0x0BFB, 2, 2))
-    time.sleep(1)
-    PAPPT = extracteur_donnee(generateur_trame(0x0C03, 2, 2))
-    time.sleep(1)
-    E = extracteur_donnee(generateur_trame(0xB06D, 2, 2))
-    time.sleep(1)
-    electrotechnique_data={
-        "tension":str(Tension), 
-        "current":str(Courant), 
-        "puissance_active":str(PAT), 
-        "puissance_apparente":str(PAPPT), 
-        "puissance_reactive":str(PRT), 
-        "energy":str(E)
-    }
-    print(electrotechnique_data)
-    data=requests.post(electrotechnique_realtime_url,json=electrotechnique_data)
-    if(counter==5):
-        data=requests.post(electrotechnique_db_url,json=electrotechnique_data)
-
+    #hum_temp = extracteur_donnee(generateur_trame(0, 2, 1))
+    #time.sleep(1)
+    #amphie_data={
+    #    "temperature":str(hum_temp[1]),
+    #    "co2_gaz":"111",
+    #    "humidity":str(hum_temp[0])
+    #}
+    #data=requests.post(amphie_realtime_url,json=amphie_data)
+    #if(counter==5):
+    #    data=requests.post(amphie_db_url,json=amphie_data)
+    #
+#
+    ## PFE
+    #Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 2))
+    #time.sleep(1)
+    #Courant = extracteur_donnee(generateur_trame(0x0BC1, 2, 2))
+    #time.sleep(1)
+    #PAT = extracteur_donnee(generateur_trame(0x0BF3, 2, 2))
+    #time.sleep(1)
+    #PRT = extracteur_donnee(generateur_trame(0x0BFB, 2, 2))
+    #time.sleep(1)
+    #PAPPT = extracteur_donnee(generateur_trame(0x0C03, 2, 2))
+    #time.sleep(1)
+    #E = extracteur_donnee(generateur_trame(0xB06D, 2, 2))
+    #time.sleep(1)
+    #pfe_data={
+    #    "tension":str(Tension), 
+    #    "current":str(Courant), 
+    #    "puissance_active":str(PAT), 
+    #    "puissance_apparente":str(PAPPT), 
+    #    "puissance_reactive":str(PRT), 
+    #    "energy":str(E)
+    #}
+    #data=requests.post(pfe_realtime_url,json=pfe_data)
+    #if(counter==5):
+    #    data=requests.post(pfe_db_url,json=pfe_data)
+#
 
     # GE
     Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 3))
@@ -152,7 +146,7 @@ while True:
         data=requests.post(ge_db_url,json=ge_data)
 
 
-    # electrotech pfe
+    # electrotech
     Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 4))
     time.sleep(1)
     Courant = extracteur_donnee(generateur_trame(0x0BC1, 2, 4))
@@ -165,7 +159,7 @@ while True:
     time.sleep(1)
     E = extracteur_donnee(generateur_trame(0x0A8B, 2, 4))
     time.sleep(1)
-    pfe_data={
+    ET_data={
         "tension":str(Tension), 
         "current":str(Courant), 
         "puissance_active":str(PAT), 
@@ -173,9 +167,9 @@ while True:
         "puissance_reactive":str(PRT), 
         "energy":str(E)
     }
-    data=requests.post(pfe_realtime_url,json=pfe_data)
+    data=requests.post(ET_realtime_url,json=ET_data)
     if(counter==5):
-        data=requests.post(pfe_db_url,json=pfe_data)
+        data=requests.post(ET_db_url,json=ET_data)
         counter=0
         print("============================================================================")
 
