@@ -59,6 +59,12 @@ export const getGlobal_chart_data = async (req: Request, res: Response) => {
 
     const data_db = await chartFunction_Global(data)
 
+    data_db.map(value => {
+        value.puissance_active = String(parseInt(value.puissance_active) * 100)
+        value.puissance_reactive = String(parseInt(value.puissance_reactive) * 100)
+        value.puissance_apparente = String(parseInt(value.puissance_apparente) * 100)
+    })
+
     res.send(data_db)
 
 

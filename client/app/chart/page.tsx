@@ -14,6 +14,8 @@ import SideNavChart from '@/components/SideNavChart'
 import { IAmphieData } from '@/types/socket_types'
 import socket from '@/utils/socket'
 import base_url from '@/utils/http'
+import HeaderChart from '@/components/HeaderChart'
+import { IDataNotifications } from '@/types/notifications'
 
 
 type TSettings = "daily" | "monthly" | "yearly"
@@ -26,7 +28,7 @@ export default function Chart() {
     const pathname = usePathname()
 
 
-    const [disablAnimations, setDisabelAnimations] = useState<boolean>(true)
+    const [disablAnimations, setDisabelAnimations] = useState<boolean>(false)
 
 
     const [startDateValue, setStartDateValue] = useState<Date | null>(null)
@@ -40,6 +42,11 @@ export default function Chart() {
 
     const [amphie_data, setAmphie_Data] = useState<IAmphieData>({})
 
+    const [notification, setNotification] = useState<IDataNotifications>({
+        notification: true,
+
+    })
+
 
 
     const router = useRouter()
@@ -48,6 +55,20 @@ export default function Chart() {
 
         socket.on("amphie_realtime", (data: IAmphieData) => {
             setAmphie_Data(data)
+        })
+
+        // notifications
+        socket.on("amphie_notification", (data: IDataNotifications) => {
+            setNotification(data)
+        })
+        socket.on("ge_department_notification", (data: IDataNotifications) => {
+            setNotification(data)
+        })
+        socket.on("gbi_department_notification", (data: IDataNotifications) => {
+            setNotification(data)
+        })
+        socket.on("pfe_room_notification", (data: IDataNotifications) => {
+            setNotification(data)
         })
 
         let interval: any
@@ -62,6 +83,10 @@ export default function Chart() {
         return () => {
             clearInterval(interval)
             socket.off("amphie_realtime")
+            socket.off("amphie_notification")
+            socket.off("ge_department_notification")
+            socket.off("gbi_department_notification")
+            socket.off("pfe_room_notification")
         }
         // }
 
@@ -107,8 +132,12 @@ export default function Chart() {
 
             const data_json = await response.json()
 
+            const newDataFiltered = data_json.map((item: any) => {
+                const { tension, current, ...newData } = item
+                return newData
+            })
             console.log(data_json)
-            setDatatDatabase(data_json)
+            setDatatDatabase(newDataFiltered)
 
 
 
@@ -120,11 +149,13 @@ export default function Chart() {
 
     return (
         <div className="bg-pprimbg pt-5 px-5 h-screen">
-            <Header
+            <HeaderChart
                 disablAnimations={disablAnimations}
                 setDisabelAnimations={setDisabelAnimations}
+                notification={notification}
+                setNotification={setNotification}
             />
-            <div className="flex">
+            <div className="flex ">
                 <SideNavChart amphie_data={amphie_data} />
 
                 <div className="flex-grow mx-10 p-5 bg-white mt-5">
@@ -152,7 +183,7 @@ export default function Chart() {
                                                 value={showValue}
                                                 onChange={setShowValue}
                                                 placeholder="Pick value"
-                                                data={['Current', 'Tension', 'puissance_active', 'puissance_reactive', 'puissance_apparente']}
+                                                data={['puissance_active', 'puissance_reactive', 'puissance_apparente', "energy"]}
                                                 comboboxProps={{ withinPortal: false }}
                                             />
                                             <Select

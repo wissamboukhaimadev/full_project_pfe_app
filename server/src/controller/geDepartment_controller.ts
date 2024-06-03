@@ -7,9 +7,11 @@ import { jsonToCSV } from "../utils/functions/csvconverter"
 import { IChartData } from "../utils/types/chart_type"
 import { chartFunction_GEDepartment } from "./chart_data/chart_data_ge_department"
 import { check_pm255_ge_notification } from "../utils/functions/notifications"
+import { IDataNotifications } from "../utils/types/notifications"
 
 
 const prisma = new PrismaClient()
+
 
 
 export const getGEDepatment_data = async (req: Request, res: Response) => {
@@ -23,7 +25,16 @@ export const insertGEDepatment_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage1Data = await prisma.gEDepartment.create({ data })
-        check_pm255_ge_notification(data)
+        const isnotified = check_pm255_ge_notification(data)
+        if (isnotified) {
+            const dataNotification: IDataNotifications = {
+                notification: false,
+                date: new Date(),
+                source: "GE Department"
+            }
+            io.emit("ge_department_notification", dataNotification)
+        }
+
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")
@@ -59,6 +70,11 @@ export const getGe_chart_data = async (req: Request, res: Response) => {
     const data: IChartData = req.body
 
     const data_db = await chartFunction_GEDepartment(data)
+    data_db.map(value => {
+        value.puissance_active = String(parseInt(value.puissance_active) * 100)
+        value.puissance_reactive = String(parseInt(value.puissance_reactive) * 100)
+        value.puissance_apparente = String(parseInt(value.puissance_apparente) * 100)
+    })
 
     res.send(data_db)
 

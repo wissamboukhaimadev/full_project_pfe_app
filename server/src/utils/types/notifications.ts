@@ -34,3 +34,10 @@ export interface IAmphie_Data_Socket_Notifications {
     createdAt?: Date
     notification: TNotification_Amphie
 }
+
+
+export interface IDataNotifications {
+    notification: boolean,
+    source: string,
+    date: Date
+}

@@ -7,6 +7,7 @@ import { jsonToCSV } from "../utils/functions/csvconverter"
 import { IChartData } from "../utils/types/chart_type"
 import { chartFunction_PfeRoom } from "./chart_data/chart_data_pfe_room"
 import { check_pm255_pfe_room_notification } from "../utils/functions/notifications"
+import { IDataNotifications } from "../utils/types/notifications"
 
 
 
@@ -22,7 +23,15 @@ export const insertPfeRoom_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage3Data = await prisma.pFERoom.create({ data })
-        check_pm255_pfe_room_notification(data)
+        const isNotified = check_pm255_pfe_room_notification(data)
+        if (isNotified) {
+            const dataNotification: IDataNotifications = {
+                notification: false,
+                date: new Date(),
+                source: "PFE ROOM"
+            }
+            io.emit("pfe_room_notification", dataNotification)
+        }
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")
@@ -57,6 +66,12 @@ export const getPFE_chart_data = async (req: Request, res: Response) => {
     const data: IChartData = req.body
 
     const data_db = await chartFunction_PfeRoom(data)
+
+    data_db.map(value => {
+        value.puissance_active = String(parseInt(value.puissance_active) * 100)
+        value.puissance_reactive = String(parseInt(value.puissance_reactive) * 100)
+        value.puissance_apparente = String(parseInt(value.puissance_apparente) * 100)
+    })
 
     res.send(data_db)
 

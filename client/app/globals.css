@@ -7,3 +7,7 @@
     text-wrap: balance;
   }
 }
+
+body {
+  padding: 50px;
+}

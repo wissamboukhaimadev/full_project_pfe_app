@@ -7,7 +7,7 @@ import { send_email_ge } from "./notifications/send_email_ge"
 import { send_email_pfe_room } from "./notifications/send_email_pfe_room"
 
 
-export const check_amphie_notification = async (data: IAmphieData) => {
+export const check_amphie_notification = (data: IAmphieData): boolean => {
     const result: IAmphie_Data_Socket_Notifications = {
         ...data,
         notification: {
@@ -50,17 +50,17 @@ export const check_amphie_notification = async (data: IAmphieData) => {
 
 
     if (result.notification.temperature !== "" || result.notification.humidity !== "") {
-        // TODO: send mail
         send_email_amphie(result.temperature, result.humidity)
+        return true
     } else {
         console.log("no_notification \n")
     }
 
-    return result.notification
+    return false
 
 
 }
-export const check_pm255_global_notification = async (data: IStage1Data) => {
+export const check_pm255_global_notification = (data: IStage1Data) => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -105,7 +105,7 @@ export const check_pm255_global_notification = async (data: IStage1Data) => {
 
 }
 
-export const check_pm255_ge_notification = async (data: IStage1Data) => {
+export const check_pm255_ge_notification = (data: IStage1Data): boolean => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -139,16 +139,18 @@ export const check_pm255_ge_notification = async (data: IStage1Data) => {
 
 
     if (result.notification.current !== "" || result.notification.tension !== "") {
-        // TODO: send mail
         send_email_ge(result.current, result.tension)
+        return true
     } else {
         console.log("no_notification \n")
     }
 
-    return result.notification
+    return false
+
+
 
 }
-export const check_pm255_electrotechnique_notification = async (data: IStage1Data) => {
+export const check_pm255_electrotechnique_notification = (data: IStage1Data): boolean => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -183,16 +185,16 @@ export const check_pm255_electrotechnique_notification = async (data: IStage1Dat
 
 
     if (result.notification.current !== "" || result.notification.tension !== "") {
-        // TODO: send mail
         send_email_electrotechnique(result.current, result.tension)
+        return true
     } else {
         console.log("no_notification \n")
     }
 
-    return result.notification
+    return false
 
 }
-export const check_pm255_pfe_room_notification = async (data: IStage1Data) => {
+export const check_pm255_pfe_room_notification = (data: IStage1Data): boolean => {
     const result: IStage_Data_Socket_Notifications = {
         ...data, notification: {
             current: "",
@@ -226,12 +228,12 @@ export const check_pm255_pfe_room_notification = async (data: IStage1Data) => {
     }
 
     if (result.notification.current !== "" || result.notification.tension !== "") {
-        // TODO: send mail
         send_email_pfe_room(result.current, result.tension)
+        return true
     } else {
         console.log("no_notification \n")
     }
 
-    return result.notification
+    return false
 
 }

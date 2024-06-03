@@ -1,3 +1,4 @@
+import { IDataNotifications } from '@/types/notifications';
 import { Drawer, Notification, ScrollArea } from '@mantine/core'
 import React from 'react'
 
@@ -5,10 +6,16 @@ import React from 'react'
 
 interface INotificationDrawer {
     opened: boolean,
-    close: () => void
+    close: () => void,
+    notification: IDataNotifications
 }
 
-export default function NotificationDrawer({ opened, close }: INotificationDrawer) {
+export default function NotificationDrawer({ opened, close, notification }: INotificationDrawer) {
+    const { date, source } = notification
+    const fdate = new Date(date as Date)
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 
     return (
@@ -20,18 +27,19 @@ export default function NotificationDrawer({ opened, close }: INotificationDrawe
             scrollAreaComponent={ScrollArea.Autosize}
         >
             <div className="mt-5">
-                {Array.from({ length: 20 }).map((item, index) => (
-                    <div key={index} className="mb-5">
-                        <Notification
-                            color={index % 2 == 0 ? 'blue' : 'pink'}
-                            key={index}
-                            title="We notify you that"
-                            onClose={() => console.log('closing')}
-                        >
-                            <p className="text-right mt-2">May 15, 2024</p>
-                        </Notification>
-                    </div>
-                ))}
+
+                <div className="mb-5">
+                    {source && <Notification
+                        color='blue'
+
+                        title={source}
+
+                        onClose={() => console.log('closing')}
+                    >
+                        <p className="text-right mt-2">{days[fdate.getDate()] + " " + fdate.getDate() + " " + months[fdate.getMonth()] + " " + fdate.getFullYear() + " at " + fdate.getHours() + "h" + fdate.getMinutes() + "m" + fdate.getSeconds() + "s"}</p>
+                    </Notification>}
+                </div>
+
             </div>
 
 

@@ -16,7 +16,7 @@ interface IHeaderProps {
     setNotification: Dispatch<SetStateAction<IDataNotifications>>
 }
 
-export default function Header({ disablAnimations, setDisabelAnimations, notification, setNotification }: IHeaderProps) {
+export default function HeaderChart({ disablAnimations, setDisabelAnimations, notification, setNotification }: IHeaderProps) {
 
     const [opened, { open, close }] = useDisclosure(false)
 
@@ -24,16 +24,12 @@ export default function Header({ disablAnimations, setDisabelAnimations, notific
 
     const router = useRouter()
     return (
-        <div className="flex justify-between pl-10 pr-5 bg-white  rounded-xl shadow-lg  mt-32">
-            <NotificationDrawer
-                opened={opened}
-                close={close}
-                notification={notification}
-            />
+        <div className="flex justify-between pl-10 pr-5 bg-white  rounded-xl shadow-lg ">
+            <NotificationDrawer opened={opened} close={close} notification={notification} />
             <Image
                 onClick={() => router.push('/')}
                 src="/logo.png"
-                className="cursor-pointer"
+                className='cursor-pointer'
                 alt="logo"
                 width={100}
                 height={40}
@@ -58,7 +54,7 @@ export default function Header({ disablAnimations, setDisabelAnimations, notific
                 </Indicator>
 
                 <ExportDownloadFile />
-                <div className="mr-5" />
+                <div className='mr-5' />
                 {/* <HandCoins className="ml-7 mr-5 cursor-pointer" size={28} /> */}
                 {/* <ConsumptionIcon /> */}
 

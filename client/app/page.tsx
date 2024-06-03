@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { IAllPMData, IAmphieData } from "@/types/socket_types";
 import socket from "@/utils/socket";
+import { IDataNotifications } from "@/types/notifications";
 
 
 
@@ -36,6 +37,11 @@ export default function Home() {
   const [stage1_data, setStage1_Data] = useState<IAllPMData>({})
   const [stage2_data, setStage2_Data] = useState<IAllPMData>({})
   const [stage3_data, setStage3_Data] = useState<IAllPMData>({})
+
+  const [notification, setNotification] = useState<IDataNotifications>({
+    notification: true,
+
+  })
 
 
   useEffect(() => {
@@ -55,6 +61,21 @@ export default function Home() {
     socket.on("stage3_realtime", (data: IAllPMData) => {
       setStage3_Data(data)
     })
+
+    // notifications
+    socket.on("amphie_notification", (data: IDataNotifications) => {
+      setNotification(data)
+    })
+    socket.on("ge_department_notification", (data: IDataNotifications) => {
+      setNotification(data)
+    })
+    socket.on("gbi_department_notification", (data: IDataNotifications) => {
+      setNotification(data)
+    })
+    socket.on("pfe_room_notification", (data: IDataNotifications) => {
+      setNotification(data)
+    })
+
 
     let state_interval: any
 
@@ -89,6 +110,10 @@ export default function Home() {
       socket.off("stage1_realtime")
       socket.off("stage2_realtime")
       socket.off("stage3_realtime")
+      socket.off("amphie_notification")
+      socket.off("ge_department_notification")
+      socket.off("gbi_department_notification")
+      socket.off("pfe_room_notification")
 
     };
   }, [router, currentLabel, disablAnimations])
@@ -100,6 +125,8 @@ export default function Home() {
       <Header
         disablAnimations={disablAnimations}
         setDisabelAnimations={setDisabelAnimations}
+        notification={notification}
+        setNotification={setNotification}
       />
 
       <div className="flex">

@@ -8,6 +8,7 @@ import { jsonToCSV } from "../utils/functions/csvconverter"
 import { IChartData } from "../utils/types/chart_type"
 import { getDataForDate_amphie } from "../utils/chart_filters/functions_amphie"
 import { chartFunction_Amphie } from "./chart_data/chart_data_amphie"
+import { IDataNotifications } from "../utils/types/notifications"
 
 
 const prisma = new PrismaClient()
@@ -26,7 +27,15 @@ export const insertAmphi_data = async (req: Request, res: Response) => {
         const data_inserted = await prisma.amphie.create({
             data
         })
-        check_amphie_notification(data)
+        const isNotified = check_amphie_notification(data)
+        if (isNotified) {
+            const dataNotification: IDataNotifications = {
+                notification: false,
+                date: new Date(),
+                source: "AMPHIE"
+            }
+            io.emit("amphie_notification", dataNotification)
+        }
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")

@@ -7,6 +7,7 @@ import { jsonToCSV } from "../utils/functions/csvconverter"
 import { chartFunction_GBIDepartment } from "./chart_data/chart_data_gbi_department"
 import { IChartData } from "../utils/types/chart_type"
 import { check_pm255_electrotechnique_notification } from "../utils/functions/notifications"
+import { IDataNotifications } from "../utils/types/notifications"
 
 
 const prisma = new PrismaClient()
@@ -22,7 +23,15 @@ export const insertGbiDepartment_data = async (req: Request, res: Response) => {
     const validate_data: boolean = validate_stage_data(data)
     if (validate_data) {
         const data_inserted: IStage2Data = await prisma.gBIDepartment.create({ data })
-        check_pm255_electrotechnique_notification(data)
+        const isNotified = check_pm255_electrotechnique_notification(data)
+        if (isNotified) {
+            const dataNotification: IDataNotifications = {
+                notification: false,
+                date: new Date(),
+                source: "ELECTROTECHNIQUE "
+            }
+            io.emit("gbi_department_notification", dataNotification)
+        }
         res.send(data_inserted)
     } else {
         res.status(500).send("data type error")
@@ -58,6 +67,12 @@ export const getGBI_chart_data = async (req: Request, res: Response) => {
     const data: IChartData = req.body
 
     const data_db = await chartFunction_GBIDepartment(data)
+
+    data_db.map(value => {
+        value.puissance_active = String(parseInt(value.puissance_active) * 100)
+        value.puissance_reactive = String(parseInt(value.puissance_reactive) * 100)
+        value.puissance_apparente = String(parseInt(value.puissance_apparente) * 100)
+    })
 
     res.send(data_db)
 

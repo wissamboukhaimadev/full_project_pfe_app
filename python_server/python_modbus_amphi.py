@@ -66,9 +66,11 @@ def extracteur_donnee(trame):
     if trame.hex()[1] == '1' :
         humidity_hex = trame.hex()[6:10]
         temp_hex = trame.hex()[10:14]
-        hum = int(humidity_hex, 16)/100
+        hum = int(humidity_hex, 16)/100  
         temp = int(temp_hex, 16)/100
-        return hum, temp
+        value=str(hum) + str(temp)
+        print(value) 
+        return value
     elif trame.hex()[1] == '2' or trame.hex()[1] == '3' or trame.hex()[1] == '4':
         data0 = int(trame.hex()[6:10], 16)
         data1 = int(trame.hex()[10:14], 16)
@@ -82,17 +84,18 @@ def extracteur_donnee(trame):
 while True:
     counter+=1
     # La temperature et l'humidité
-    #hum_temp = extracteur_donnee(generateur_trame(0, 2, 1))
-    #time.sleep(1)
-    #amphie_data={
-    #    "temperature":str(hum_temp[1]),
-    #    "co2_gaz":"111",
-    #    "humidity":str(hum_temp[0])
-    #}
-    #data=requests.post(amphie_realtime_url,json=amphie_data)
-    #if(counter==5):
-    #    data=requests.post(amphie_db_url,json=amphie_data)
-    #
+    hum_temp = extracteur_donnee(generateur_trame(0, 2, 1))
+
+    time.sleep(1)
+    amphie_data={
+       "temperature":str(hum_temp[1]),
+       "co2_gaz":"111",
+       "humidity":str(hum_temp[0])
+    }
+    data=requests.post(amphie_realtime_url,json=amphie_data)
+    if(counter==5):
+       data=requests.post(amphie_db_url,json=amphie_data)
+    
 #
     ## PFE
     #Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 2))
@@ -122,17 +125,17 @@ while True:
 
     # GE
     Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 3))
-    time.sleep(1)
+    time.sleep(1.5)
     Courant = extracteur_donnee(generateur_trame(0x0BC1, 2, 3))
-    time.sleep(1)
+    time.sleep(1.5)
     PAT = extracteur_donnee(generateur_trame(0x0BF3, 2, 3))
-    time.sleep(1)
+    time.sleep(1.5)
     PRT = extracteur_donnee(generateur_trame(0x0BFB, 2, 3))
-    time.sleep(1)
+    time.sleep(1.5)
     PAPPT = extracteur_donnee(generateur_trame(0x0C03, 2, 3))
-    time.sleep(1)
+    time.sleep(1.5)
     E = extracteur_donnee(generateur_trame(0x0A8B, 2, 3))
-    time.sleep(1)
+    time.sleep(1.5)
     ge_data={
         "tension":str(Tension), 
         "current":str(Courant), 
@@ -148,17 +151,17 @@ while True:
 
     # electrotech
     Tension = extracteur_donnee(generateur_trame(0x0BDB, 2, 4))
-    time.sleep(1)
+    time.sleep(1.5)
     Courant = extracteur_donnee(generateur_trame(0x0BC1, 2, 4))
-    time.sleep(1)
+    time.sleep(1.5)
     PAT = extracteur_donnee(generateur_trame(0x0BF3, 2, 4))
-    time.sleep(1)
+    time.sleep(1.5)
     PRT = extracteur_donnee(generateur_trame(0x0BFB, 2, 4))
-    time.sleep(1)
+    time.sleep(1.5)
     PAPPT = extracteur_donnee(generateur_trame(0x0C03, 2, 4))
-    time.sleep(1)
+    time.sleep(1.5)
     E = extracteur_donnee(generateur_trame(0x0A8B, 2, 4))
-    time.sleep(1)
+    time.sleep(1.5)
     ET_data={
         "tension":str(Tension), 
         "current":str(Courant), 
@@ -173,4 +176,4 @@ while True:
         counter=0
         print("============================================================================")
 
-    time.sleep(1)
+    time.sleep(1.5)
